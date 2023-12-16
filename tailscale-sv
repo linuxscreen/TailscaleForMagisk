@@ -28,7 +28,7 @@ display_bin_status() {
 	if bin_status ; then
 		stat=`tailscale --socket "${SOCKET_FILE}" status`
 		if [[ "${stat}" == "Logged out." ]]; then
-			echo "not log in,please visit:\033[33m${web_url}\033[0mor excute\033[33m\`tailscale login\`\033[0m by terminal to login in"
+			echo "not log in,please visit:\033[33m${web_url}\033[0m or excute\033[33m\`tailscale login\`\033[0m by terminal to login in"
 	  	# sed -i "6cdescription=[管理地址:${listen},未登录，使用终端执行 “su -c tailscale login” 进行登录]${DES}" ${MODDIR}/module.prop
 	  else
 	  	echo "already logged in,management address:\033[33m${web_url}\033[0m,check the status excute\033[33m\`tailscale status\`\033[0m by terminal"
