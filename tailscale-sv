@@ -1,0 +1,111 @@
+#!/system/bin/sh
+path="/data/adb/tailscale"
+web_url="http://localhost:8088"
+bin_name="tailscaled"
+web_bin_name="tailscale"
+#bin_dir="/data/data/com.termux/files/home/code/TailscaleForMagisk"
+STATE_FILE="${path}/tailscaled.state"
+SOCKET_FILE="${path}/tailscaled.sock"
+pid_file=$path/pid
+web_pid_file=$path/web_pid
+busybox="/data/adb/magisk/busybox"
+[ -f "/data/adb/ksu/bin/busybox" ] && busybox="/data/adb/ksu/bin/busybox"
+bin_status() {
+	if [[ $(${busybox} pidof ${bin_name}) ]]; then
+		return 0
+	else
+		return 1
+	fi
+}
+web_bin_status() {
+	if [[ $(${busybox} pidof tailscale) ]]; then
+		return 0
+	else
+		return 1
+	fi
+}
+display_bin_status() {
+	if bin_status ; then
+		stat=`tailscale --socket "${SOCKET_FILE}" status`
+		if [[ "${stat}" == "Logged out." ]]; then
+			echo "not log in,please visit:\033[33m${web_url}\033[0mor excute\033[33m\`tailscale login\`\033[0m by terminal to login in"
+	  	# sed -i "6cdescription=[管理地址:${listen},未登录，使用终端执行 “su -c tailscale login” 进行登录]${DES}" ${MODDIR}/module.prop
+	  else
+	  	echo "already logged in,management address:\033[33m${web_url}\033[0m,check the status excute\033[33m\`tailscale status\`\033[0m by terminal"
+		fi
+		echo -e "\033[32m● service running \033[0m"
+	else
+		echo -e "\033[31m● service stopped \033[0m"
+	fi
+}
+start_bin() {
+	if [[ ! -f $STATE_FILE ]]; then
+		#statements
+		touch $STATE_FILE
+	fi
+	if [[ ! -f $SOCKET_FILE ]]; then
+		#statements
+		touch $SOCKET_FILE
+	fi
+	if ! bin_status ; then
+		nohup $bin_name --state=${STATE_FILE} --socket=${SOCKET_FILE} > /dev/null 2> $path/error.log &
+		echo -n $! > $path/pid
+		if ! bin_status; then
+			echo "\033[31mstart service fail，plese visit ${path}/error.log\033[0m"
+		fi
+	fi
+	if ! web_bin_status; then
+		nohup tailscale --socket "${SOCKET_FILE}" web > "${path}"/web.log 2>&1 &
+		echo -n $! > $path/web_pid
+		if ! web_bin_status; then
+			echo "\033[31mstart web management fail，plese visit ${path}/web.log\033[0m"
+		fi
+	fi
+	
+}
+start_service() {
+	start_bin
+	
+}
+stop_service() {
+		if web_bin_status; then
+		kill $(cat ${web_pid_file}) || killall ${web_bin_name}
+		while web_bin_status; do
+			sleep 0.5
+		done
+		forward -D >> /dev/null 2>&1
+		rm -f ${web_pid_file} >> /dev/null 2>&1
+	fi
+	if bin_status ; then
+		echo "stopping ${bin_name} service."
+		kill $(cat ${pid_file}) || killall ${bin_name}
+		while bin_status; do
+			sleep 0.5
+		done
+		forward -D >> /dev/null 2>&1
+	else
+		echo "service has been stopped"
+	fi
+	rm -f ${pid_file} >> /dev/null 2>&1
+}
+case "$1" in
+  start)
+    start_service
+    display_bin_status
+    ;;
+  stop)
+    stop_service
+    display_bin_status
+    ;;
+  restart)
+    stop_service
+    start_service
+    display_bin_status
+    ;;
+  status)
+    display_bin_status
+    ;;
+  *)
+    echo "$0 $1 usage: $0 {start|stop|restart|status}"
+    ;;
+esac
