@@ -15,7 +15,7 @@ tailscale-sv status
 already logged in,management address:http://localhost:8088,check the status excute`tailscale status` by terminal
 ```
 
-启动、重启、停止zerotier-one服务
+启动、重启、停止tailscaled服务
 
 ```
 tailscale-sv start
