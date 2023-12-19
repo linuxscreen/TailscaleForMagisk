@@ -1,6 +1,6 @@
 id=TailscaleForMagisk
 name=Tailscale For Magisk
-version=v1.0
-versionCode=20231216
+version=v1.1
+versionCode=20231219
 author=linuxscreen
 description=use tailscale on android device
