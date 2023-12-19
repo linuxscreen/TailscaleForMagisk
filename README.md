@@ -11,7 +11,7 @@ The project is a [Magisk](https://github.com/topjohnwu/Magisk) module for Tailsc
 The project is not responsible for bricked equipment, damaged SD cards, or burned SoC
 
 # Usage
-After the module is installed, it runs in the background.
+After the module is installed, it runs in the background
 
 Executable file `tailscale-sv`、`tailscaled`、`tailscale` will copy to `/system/bin` ,You can directly run commands as the root user by terminal
 
@@ -20,7 +20,7 @@ tailscale-sv status
 already logged in,management address:http://localhost:8088,check the status excute`tailscale status` by terminal
 ```
 
-Start、restart、stop tailscaled service
+Start, restart, stop tailscaled service
 
 ```
 tailscale-sv start
@@ -35,7 +35,7 @@ Login in tailscale
 - ```
   # Executive command
   tailscale login
-
+  ```
 tailscale data will storage in /data/adb/tailscale
 
 # Uninstall
