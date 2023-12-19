@@ -1,21 +1,26 @@
 # Tailscale for Magisk
 
-支持Magisk和kernelSU
+[README](README.md) | [中文文档](README_zh.md)
 
-# 免责声明
-本项目不对以下情况负责：设备变砖、SD 卡损坏或 SoC 烧毁。
+[![GitHub Release](https://img.shields.io/github/v/release/linuxscreen/TailscaleForMagisk)](https://github.com/linuxscreen/TailscaleForMagisk/releases)
+[![GitHub Download](https://img.shields.io/github/downloads/linuxscreen/TailscaleForMagisk/total)](https://github.com/linuxscreen/TailscaleForMagisk/releases)
 
-# 使用方法
-安装模块之后会在系统后台运行
+The project is a [Magisk](https://github.com/topjohnwu/Magisk) module for Tailscale, Support Magisk and KernelSU
 
-可执行文件`tailscale-sv`、`tailscaled`、`tailscale` 会复制到`/system/bin`，切换root后，可以直接运行命令
+# Disclaimer
+The project is not responsible for bricked equipment, damaged SD cards, or burned SoC
+
+# Usage
+After the module is installed, it runs in the background.
+
+Executable file `tailscale-sv`、`tailscaled`、`tailscale` will copy to `/system/bin` ,You can directly run commands as the root user by terminal
 
 ```bash
 tailscale-sv status
 already logged in,management address:http://localhost:8088,check the status excute`tailscale status` by terminal
 ```
 
-启动、重启、停止tailscaled服务
+Start、restart、stop tailscaled service
 
 ```
 tailscale-sv start
@@ -23,18 +28,19 @@ tailscale-sv restart
 tailscale-sv stop
 ```
 
-登陆tailscale
+Login in tailscale
 
-- 直接访问web管理页面: http://localhost:8088
+- Direct access to the web administration page: http://localhost:8088
 
 - ```
-  # 执行命令
+  # Executive command
   tailscale login
 
-tailscale数据存储在/data/adb/tailscale
+tailscale data will storage in /data/adb/tailscale
 
-# 卸载
+# Uninstall
 
-- 从 Magisk Manager应用卸载本模块，会删除 `/data/adb/service.d/tailscale_service.sh` 文件，保留数据目录 `/data/adb/tailscale`
+- Uninstall this module from the Magisk Manager application，will delete `/data/adb/service.d/tailscale_service.sh`，Reserved data directory `/data/adb/tailscale`
 
-- 可使用命令清除数据：`rm -rf /data/adb/tailscale`
+- You can use commands to clear data: `rm -rf /data/adb/tailscale`
+
