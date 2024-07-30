@@ -28,12 +28,12 @@ jobs:
           cp /home/runner/go/bin/android_arm64/tailscaled ../TailscaleForMagisk/src
           cd ..
       - name: Archive project
-        run: cd TailscaleForMagisk/src && zip -r TailscaleForMagisk.zip *  # 创建项目的压缩包
+        run: cd TailscaleForMagisk/src && zip -r ../../TailscaleForMagisk.zip *
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: project-archive
-          path: TailscaleForMagisk/src/TailscaleForMagisk.zip
+          path: TailscaleForMagisk.zip
       - name: Create Tag
         uses: mathieudutour/github-tag-action@v5.6
         with:
