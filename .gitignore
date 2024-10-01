@@ -1,2 +1,4 @@
 TailscaleForMagisk.zip
 *.zip
+.secrets
+.vars

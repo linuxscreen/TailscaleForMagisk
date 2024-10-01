@@ -27,6 +27,11 @@ jobs:
           cp /home/runner/go/bin/android_arm64/tailscale ../TailscaleForMagisk/src
           cp /home/runner/go/bin/android_arm64/tailscaled ../TailscaleForMagisk/src
           cd ..
+      - name: Update version and versionCode
+        run: |
+          current_date=$(date +'%Y%m%d')
+          sed -i "s/^version=.*/version=v${{ vars.TAILSCALE_BRANCH }}/" TailscaleForMagisk/src/module.prop
+          sed -i "s/^versionCode=.*/versionCode=$current_date/" TailscaleForMagisk/src/module.prop
       - name: Archive project
         run: cd TailscaleForMagisk/src && zip -r ../../TailscaleForMagisk.zip *
       - name: Upload Artifact
